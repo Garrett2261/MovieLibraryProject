@@ -1,7 +1,8 @@
 (function($){
-    function processForm( e ){
+    function addMovie( e ){
         var dict = {
         	Title : this["title"].value,
+        	Genre: this["genre"].value,
         	Director: this["director"].value
         };
 
@@ -22,5 +23,24 @@
         e.preventDefault();
     }
 
-    $('#my-form').submit( processForm );
+    function getMovie(e){
+    	$.ajax({
+    		url: 'https://localhost:44352/api/movie',
+    		dataType: 'json',
+    		type: 'get',
+    		success: function(data){
+    			$.each(data, function(key, item){
+    				var movieTitle = item.Title;
+    				var movieGenre = item.Genre;
+    				var movieDirector = item.Director;
+    				$('#title').append(movieTitle);
+    				$('#genre').append(movieGenre);
+    				$('#director').append(movieDirector); 
+    			})
+    		}
+    	})
+    }
+
+    $('#my-form').submit( addMovie );
+    $('#getMovies').get(getMovie);
 })(jQuery);
