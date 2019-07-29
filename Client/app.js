@@ -1,5 +1,5 @@
 (function($){
-	var movieItem = $('#movies');
+	var movies = $('#movies');
 	var clearList = $('#clearList');
     function addMovie( e ){
         var dict = {
@@ -36,15 +36,31 @@
     				var movieTitle = item.Title;
     				var movieGenre = item.Genre;
     				var movieDirector = item.Director;
-    				movieItem.append('<li>' + movieTitle + '</li>');
-    				movieItem.append('<li>' + movieGenre + '</li>');
-    				movieItem.append('<li>' + movieDirector + '</li>'); 
+    				movies.append('<tr>' + '<td>' + movieTitle + '</td>' + '<td>' + movieGenre + '</td>' + '<td>' + movieDirector + '</td>' + '</tr>');
     			});
     			clearList.click(function(){
-    				movieItem.empty();
+    				movieRow.empty();
     			})
     		},
     	});
+
+    	/*function updateMovie(e){
+    		$.ajax({
+    			url: 'https://localhost:44352/api/movie/' + movieId,
+    			dataType: 'json',
+    			type: 'put',
+    			contentType: 'application/json',
+    			data: JSON.stringify(),
+    			success: function(data){
+    				alert("Update successful!");
+    			}
+    			
+
+    		});
+    		e.preventDefault();
+    	}*/
+
+
     
 
     $('#my-form').submit( addMovie );
