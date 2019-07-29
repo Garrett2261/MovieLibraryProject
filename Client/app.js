@@ -1,6 +1,6 @@
 (function($){
 	var movies = $('#movies');
-	var clearList = $('#clearList');
+	var clearMovie = $('#clearMovie');
     function addMovie( e ){
         var dict = {
         	Title : this["title"].value,
@@ -29,7 +29,6 @@
     	
     	$.ajax({
     		url: 'https://localhost:44352/api/movie',
-    		
     		type: 'get',
     		success: function(data){
     			$.each(data, function(key, item){
@@ -38,11 +37,30 @@
     				var movieDirector = item.Director;
     				movies.append('<tr>' + '<td>' + movieTitle + '</td>' + '<td>' + movieGenre + '</td>' + '<td>' + movieDirector + '</td>' + '</tr>');
     			});
-    			clearList.click(function(){
-    				movieRow.empty();
-    			})
+    			
+    			
     		},
     	});
+
+    	function getMovieById(e){
+    		var movieId = this["id"].value;
+    		$.ajax({
+    			url: 'https://localhost:44352/api/movie/' + movieId,
+    			type: 'get',
+    			success: function(data){
+    				movies.append('<tr>' + '<td>' + data.Title + '</td>' + '<td>' + data.Genre + '</td>' + '<td>' + data.Director + '</td>' + '</tr>');
+
+    			},
+    			error: function(jqXhr, textStatus, errorThrown){
+    				console.log(errorThrown);
+    			}
+
+    		});
+    		clearMovie.click(function(){
+    			movies.empty();
+    		})
+    		e.preventDefault();
+    	}
 
     	/*function updateMovie(e){
     		$.ajax({
@@ -64,5 +82,6 @@
     
 
     $('#my-form').submit( addMovie );
+    $('#getMovieById').submit(getMovieById);
     
 })(jQuery);
