@@ -1,17 +1,19 @@
 (function($){
 	var movies = $('#movies');
 	var clearMovie = $('#clearMovie');
+	//var idOfMovie = getMovieById();
     function addMovie( e ){
         var dict = {
+        	MovieId: this["movieid"].value,
         	Title : this["title"].value,
         	Genre: this["genre"].value,
         	Director: this["director"].value
         };
         var url = "";
         var httpType = "";
-        var movieId = this["id"].value;
-        if (movieId) {
-        	url = "https://localhost:44352/api/movie/" + movieId;
+        //var movieId = getMovieById();
+        if (dict.MovieId) {
+        	url = "https://localhost:44352/api/movie/" + dict.MovieId;
         	httpType = "put";
         }
         else{
@@ -64,6 +66,7 @@
     			success: function(data){
     				movies.empty();
     				movies.append('<tr>' + '<th>' + "Title" + '</th>' + '<th>' + "Genre" + '</th>' + '<th>' + "Director" + '</th>' + '</tr>' + '<tr>' + '<td>' + data.Title + '</td>' + '<td>' + data.Genre + '</td>' + '<td>' + data.Director + '</td>' + '</tr>');
+    				alert(data.MovieId);
 
     			},
     			error: function(jqXhr, textStatus, errorThrown){
@@ -71,10 +74,9 @@
     			}
 
     		});
-    		clearMovie.click(function(){
-    			movies.empty();
-    		})
+    		
     		e.preventDefault();
+    		
     	}
 
     	/*function updateMovie(e){
