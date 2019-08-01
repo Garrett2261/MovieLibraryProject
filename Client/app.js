@@ -7,15 +7,26 @@
         	Genre: this["genre"].value,
         	Director: this["director"].value
         };
-
+        var url = "";
+        var httpType = "";
+        var movieId = this["id"].value;
+        if (movieId) {
+        	url = "https://localhost:44352/api/movie/" + movieId;
+        	httpType = "put";
+        }
+        else{
+        	url = "https://localhost:44352/api/movie/";
+        	httpType = "post";
+        }
         $.ajax({
-            url: 'https://localhost:44352/api/movie',
+            url: url,
             dataType: 'json',
-            type: 'post',
+            type: httpType,
             contentType: 'application/json',
             data: JSON.stringify(dict),
             success: function( data, textStatus, jQxhr ){
                 $('#response pre').html( data );
+                alert("Success");
             },
             error: function( jqXhr, textStatus, errorThrown ){
                 console.log( errorThrown );
@@ -39,8 +50,11 @@
     			});
     			
     			
+    			
     		},
     	});
+
+    	
 
     	function getMovieById(e){
     		var movieId = this["id"].value;
@@ -48,7 +62,8 @@
     			url: 'https://localhost:44352/api/movie/' + movieId,
     			type: 'get',
     			success: function(data){
-    				movies.append('<tr>' + '<td>' + data.Title + '</td>' + '<td>' + data.Genre + '</td>' + '<td>' + data.Director + '</td>' + '</tr>');
+    				movies.empty();
+    				movies.append('<tr>' + '<th>' + "Title" + '</th>' + '<th>' + "Genre" + '</th>' + '<th>' + "Director" + '</th>' + '</tr>' + '<tr>' + '<td>' + data.Title + '</td>' + '<td>' + data.Genre + '</td>' + '<td>' + data.Director + '</td>' + '</tr>');
 
     			},
     			error: function(jqXhr, textStatus, errorThrown){
@@ -63,14 +78,23 @@
     	}
 
     	/*function updateMovie(e){
+    		var movieId = this["id"].value;
+    		var movie = {
+    			Title: this["newTitle"].value,
+    			Genre: this["newGenre"].value,
+    			Director: this["newDirector"].value
+    		};
     		$.ajax({
     			url: 'https://localhost:44352/api/movie/' + movieId,
     			dataType: 'json',
     			type: 'put',
     			contentType: 'application/json',
-    			data: JSON.stringify(),
+    			data: JSON.stringify(movie),
     			success: function(data){
     				alert("Update successful!");
+    			}
+    			error: function(error){
+    				alert(error);
     			}
     			
 
